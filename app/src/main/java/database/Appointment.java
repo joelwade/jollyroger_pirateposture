@@ -16,6 +16,11 @@ public class Appointment
     private Image PatientImage;
     private String Diagnostic;
 
+    //Constructors
+    public void Appointment(String str1, String str2)
+    {
+    }
+
     public Appointment(int appointmentID, int patientID, int appointmentNo, Date appointmentDate, Image patientImage, String diagnostic) {
         this.AppointmentID = appointmentID;
         this.PatientID = patientID;

@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by p4068830 on 19/04/16.
  */
-public class patients {
+public class Patient {
 
     private int PatientID;
     private String FirstName;
@@ -13,9 +13,13 @@ public class patients {
     private Date DoB;
     private String Gender;
 
-    //Constructor
+    //Constructors
+    public void Patient(String str1, String str2)
+    {
 
-    public void Contact(int PatientID, String FirstName, String SurName, Date DoB, String Gender, Date DateLastSeen, String ImageLink)
+    }
+
+    public void Patient(int PatientID, String FirstName, String SurName, Date DoB, String Gender, Date DateLastSeen, String ImageLink)
     {
         this.PatientID = PatientID;
         this.FirstName = FirstName;
@@ -23,6 +27,7 @@ public class patients {
         this.DoB = DoB;
         this.Gender = Gender;
     }
+
 
     public int getPatientID() {
         return PatientID;

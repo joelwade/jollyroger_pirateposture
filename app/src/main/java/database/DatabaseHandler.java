@@ -47,7 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     {
         String CREATE_PATIENTS_TABLE = "CREATE TABLE "
             + Table_Patients
-            + "(" PT_ID
+            + "(" + PT_ID//Make sure that this isn't an issue
             +" INTEGER PRIMARY KEY AUTOINCREMENT, "
             + PT_FIRSTNAME
             + " TEXT NOT NULL, "
@@ -60,7 +60,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_APPOINTMENTS_TABLE = "CREATE TABLE "
             + Table_Appointments
-            + "(" AP_ID
+            + "(" + AP_ID//Make sure that this isn't an issue
             + "INTEGER PRIMARY KEY AUTOINCREMENT, "
             + AP_PATIENTID
             + " TEXT NOT NULL , "
@@ -86,15 +86,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addPatient(Patients patients)
+    void addPatient(Patient patients)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(PT_ID, patients.getPatientsID());
-        values.put(PT_FIRSTNAME, patients.getFirstName());
-        values.put(PT_SURNAME, patients.getSurName());
-        values.put(PT_DOB, patients.getDoB());
-        values.put(PT_GENDER, patients.getGender());
+        values.put(PT_ID, Patient.getPatientID());
+        values.put(PT_FIRSTNAME, Patient.getFirstName());
+        values.put(PT_SURNAME, Patient.getSurName());
+        values.put(PT_DOB, Patient.getDoB());
+        values.put(PT_GENDER, Patient.getGender());
         db.insert(Table_Patients, null, values);
         db.close(); //closing database connection
     }
@@ -121,9 +121,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public List<Patients> getAll()
+    public List<Patient> getAllPatients()
     {
-        List<Patients> list = new ArrayList<Patients>();
+        List<Patient> list = new ArrayList<Patient>();
         String selectQuery = "SELECT * FROM " + Table_Patients; //* means everything
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -131,14 +131,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         {
             do
             {
-                Patients patients = new Patients(cursor.getString(1), cursor.getString(2));
-                list.add(patients);
+                Patient patient = new Patient(cursor.getString(1), cursor.getString(2));
+                list.add(patient);
             }while (cursor.moveToNext());
         }
         return list;
     }
 
-    public List<Appointment> getAll()
+    public List<Appointment> getAllApointments()
     {
         List<Appointment> list = new ArrayList<Appointment>();
         String selectQuery = "SELECT * FROM " + Table_Appointments;
@@ -148,7 +148,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         {
             do
             {
-                Appointment appointment = new Appointment(cursor.getString(1), cursor.getString(2));
+                Appointment Appointment = new Appointment(cursor.getString(1), cursor.getString(2));
             }while (cursor.moveToNext());
         }
         return list;

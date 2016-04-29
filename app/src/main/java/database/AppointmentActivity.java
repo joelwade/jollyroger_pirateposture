@@ -5,8 +5,6 @@ import android.util.Log;
 
 import java.util.List;
 
-import database.Appointment;
-import database.DatabaseHandler;
 import jollyroger.enterprise.R;
 
 /**
@@ -24,10 +22,10 @@ public class AppointmentActivity
         DatabaseHandler db = new DatabaseHandler(this);
 
         //Log.db("Database: ", "Inserting values..");
-        //db.addPatient(new patients());
+        //db.addPatient(new Patient());
 
         log.d("Database: ", "Reading all contacts..");
-        List<Appointment> list = db.getAll();
+        List<Appointment> list = db.getAllApointments();
         for(Appointment ap: list)
         {
             String log = "ID: " + ap.getAppointmentID()
@@ -35,7 +33,7 @@ public class AppointmentActivity
                     + "AppointmentNo: " + ap.getAppointmentNo()
                     + "AppointmentDate: " + ap.getAppointmentDate()
                     + "PatientImage: " + ap.getPatientImage()
-                    + "Diagnostic: " + ap.getDiagnostic()
+                    + "Diagnostic: " + ap.getDiagnostic();
             Log.d("Database: ", log);
         }
     }
