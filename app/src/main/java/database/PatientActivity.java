@@ -21,12 +21,12 @@ public class PatientActivity extends Activity {
         //setContentView(R.layout.main);  this gives error, fix.
 
         //get reference to handler
-        DatabaseHandler db = new DatabaseHandler();
+        DatabaseHandler db = new DatabaseHandler(this);
 
         //Log.db("Database: ", "Inserting values..");
         //db.addPatient(new Patient());
 
-        log.d("Database: ", "Reading all contacts..");
+        //log.d("Database: ", "Reading all contacts..");
         List<Patient> list = db.getAllPatients();
         for(Patient pt: list)
         {
