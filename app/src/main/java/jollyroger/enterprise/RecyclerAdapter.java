@@ -36,25 +36,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position)
-    {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         RecyclerButton current = data.get(position);
         Log.d("RecyclerAdapter", "onBindViewHolder called " + position);
         holder.listText.setText(current.getTitle());
         holder.listIcon.setImageResource(current.getIconId());
 
 
-
     }
 
     @Override
     public int getItemCount() {
-        return  data.size();
+        return data.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView listText;
         ImageView listIcon;
+
         public MyViewHolder(View itemView) {
             super(itemView);
             listText = (TextView) itemView.findViewById(R.id.listText);
@@ -65,20 +64,13 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         @Override
         public void onClick(View v) {
 
-            if(getPosition() == 0)
-            {
+            if (getPosition() == 0) {
                 context.startActivity(new Intent(context, CameraActivity.class));
-            }
-            else if(getPosition() == 1)
-            {
+            } else if (getPosition() == 1) {
                 context.startActivity(new Intent(context, DatabaseActivity.class));
-            }
-            else if(getPosition() == 2)
-            {
+            } else if (getPosition() == 2) {
                 context.startActivity(new Intent(context, SettingsActivity.class));
-            }
-            else if(getPosition() == 3)
-            {
+            } else if (getPosition() == 3) {
                 context.startActivity(new Intent(context, CreditsActivity.class));
             }
         }
