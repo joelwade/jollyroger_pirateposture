@@ -26,9 +26,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import tabs.SlidingTabLayout;
 
@@ -36,12 +33,10 @@ import static jollyroger.enterprise.R.id.textView;
 import static jollyroger.enterprise.R.layout.activity_main_menu;
 import static jollyroger.enterprise.R.id.main_menu_toolbar;
 
-public class Main_Menu_Activity extends AppCompatActivity{
+public class Main_Menu_Activity extends AppCompatActivity {
 
-    private GoogleApiClient client;
     private ViewPager mPager;
     private SlidingTabLayout mTabs;
-    ActionBar actionBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,14 +46,9 @@ public class Main_Menu_Activity extends AppCompatActivity{
         setSupportActionBar(toolbar);
 
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-
         //NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment)
         //        getSupportFragmentManager().findFragmentById(R.id.fragment_navigation_drawer);
         //drawerFragment.setUp(R.id.fragment_navigation_drawer, (DrawerLayout) findViewById(R.id.drawer_layout), toolbar);
-
 
 
         mPager = (ViewPager) findViewById(R.id.pager);
@@ -73,7 +63,6 @@ public class Main_Menu_Activity extends AppCompatActivity{
             }
         });
         mTabs.setViewPager(mPager);
-
 
 
     }
@@ -111,21 +100,14 @@ public class Main_Menu_Activity extends AppCompatActivity{
         @Override
         public Fragment getItem(int position) {
             Fragment fragment = null;
-            if(position == 0)
-            {
+            if (position == 0) {
 
                 fragment = new CameraFragment();
-            }
-            else if(position == 1)
-            {
+            } else if (position == 1) {
                 fragment = new DatabaseFragment();
-            }
-            else if(position == 2)
-            {
+            } else if (position == 2) {
                 fragment = new SettingsFragment();
-            }
-            else if(position == 3)
-            {
+            } else if (position == 3) {
                 fragment = new CreditsFragment();
             }
             return fragment;
@@ -180,6 +162,10 @@ public class Main_Menu_Activity extends AppCompatActivity{
 
     public void ChangeToOrange(View view) {
         findViewById(R.id.main_menu_toolbar).setBackgroundColor(getResources().getColor(R.color.my_orange));
+    }
+
+    public void OpenCamera(View view) {
+        startActivity(new Intent(this, CameraActivity.class));
     }
 
 
