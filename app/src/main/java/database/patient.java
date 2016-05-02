@@ -19,7 +19,7 @@ public class Patient {
 
     }
 
-    public void Patient(int PatientID, String FirstName, String SurName, Date DoB, String Gender, Date DateLastSeen, String ImageLink)
+    public void Patient(int PatientID, String FirstName, String SurName, Date DoB, String Gender)
     {
         this.PatientID = PatientID;
         this.FirstName = FirstName;

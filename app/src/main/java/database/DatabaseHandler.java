@@ -1,6 +1,7 @@
 package database;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,10 +12,14 @@ import java.util.List;
 /**
  * Created by p4068830 on 19/04/16.
  */
-public class DatabaseHandler extends SQLiteOpenHelper {
+public class DatabaseHandler extends SQLiteOpenHelper
+{
+
+    private Patient patient = new Patient();
+    private Appointment appointment = new Appointment(); //idk??
 
     //Database Name
-    private static final String Database_Posturedb = "Posture.db";
+    private static final String Database_Name = "Posture.db";
 
     //Patients table name
     private static final String Table_Patients = "Patients";
@@ -29,7 +34,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String PT_DOB = "DoB";
     private static final String PT_GENDER = "Gender";
 
-    //
+    //Appointments Table Columns names
     private static final String AP_ID = "_id";
     private static final String AP_PATIENTID = "PatientID";
     private static final String AP_APPOINTMENTNO = "AppointmentNo";
@@ -37,11 +42,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String AP_PATIENTIMAGE = "PatientImage";
     private static final String AP_DIAGNOSTIC = "Diagnostic";
 
-    public DatabaseHandler(context context)
+    //Constructor
+    public DatabaseHandler(Context context)
     {
-        super(context, Database_Posturedb, null, 1);
+        super(context, Database_Name, null, 1);
     }
 
+    //Creates the database tables and columns
     @Override
     public void onCreate(SQLiteDatabase db)
     {
@@ -72,7 +79,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             + " TEXT NOT NULL , "
             + AP_DIAGNOSTIC
             + " TEXT NOT NULL, "
-            + " FOREIGN KEY ("+AP_PATIENTID+") REFERENCES " + Table_Patients + "("+PatientID+"));";
+            + " FOREIGN KEY ("+AP_PATIENTID+") REFERENCES " + Table_Patients + "("+PT_ID+"));";
         db.execSQL(CREATE_PATIENTS_TABLE);
         db.execSQL(CREATE_APPOINTMENTS_TABLE);
     }
@@ -86,71 +93,78 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    void addPatient(Patient patients)
+    // Adds data to the patients table
+    public boolean insertDataPatients()
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(PT_ID, Patient.getPatientID());
-        values.put(PT_FIRSTNAME, Patient.getFirstName());
-        values.put(PT_SURNAME, Patient.getSurName());
-        values.put(PT_DOB, Patient.getDoB());
-        values.put(PT_GENDER, Patient.getGender());
-        db.insert(Table_Patients, null, values);
-        db.close(); //closing database connection
+        values.put(PT_FIRSTNAME, patient.getFirstName());
+        values.put(PT_SURNAME, patient.getSurName());
+        values.put(PT_DOB, String.valueOf(patient.getDoB())); // because its a date variable
+        values.put(PT_GENDER, patient.getGender());
+        long result = db.insert(Table_Patients, null, values);
+        if(result == -1)// if the contents arent inserted db.insert returns -1, so this is a check for if the data is inserted
+            return false;
+        else
+            return true;
     }
 
-    void addAppointment(Appointment appointment)
+    // Adds data to the appointments table
+    public boolean insertDataAppointments()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(AP_APPOINTMENTNO, appointment.getAppointmentNo());
+        values.put(AP_APPOINTMENTDATE, String.valueOf(appointment.getAppointmentDate())); // because its a date variable
+        values.put(AP_PATIENTIMAGE, String.valueOf(appointment.getPatientImage()));
+        values.put(AP_DIAGNOSTIC, appointment.getDiagnostic());
+        long result = db.insert(Table_Patients, null, values);
+        if(result == -1)// if the contents arent inserted db.insert returns -1, so this is a check for if the data is inserted
+            return false;
+        else
+            return true;
+    }
+
+    // Updates a field based on their ID
+    public boolean updatePatients(String id)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(PT_ID, patient.getPatientID());
+        values.put(PT_FIRSTNAME, patient.getFirstName());
+        values.put(PT_SURNAME, patient.getSurName());
+        values.put(PT_DOB, String.valueOf(patient.getDoB())); // because its a date variable
+        values.put(PT_GENDER, patient.getGender());
+        db.update(Table_Patients, values, "_id = ?", new String[]{id}); //queries by finding the field based on id
+        return true;
+    }
+
+    // Updates a field based on their ID
+    public boolean updateAppointments(String id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(AP_ID, appointment.getAppointmentID());
         values.put(AP_PATIENTID, appointment.getPatientID());
         values.put(AP_APPOINTMENTNO, appointment.getAppointmentNo());
-        values.put(AP_APPOINTMENTDATE, appointment.getAppointmentDate());
-        values.put(AP_PATIENTIMAGE, appointment.getPatientImage());
+        values.put(AP_APPOINTMENTDATE, String.valueOf(appointment.getAppointmentDate()));
+        values.put(AP_PATIENTIMAGE, String.valueOf(appointment.getPatientImage()));
         values.put(AP_DIAGNOSTIC, appointment.getDiagnostic());
-        db.insert(Table_Appointments, null, values);
-        db.close();
+        db.update(Table_Patients, values, "_id = ?", new String[]{id});//queries by finding the field based on id
+        return true;
     }
 
-    public void removeAll()
+    // Deletes the patient based on ID
+    public Integer deletePatient(String id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DROP TABLE IF EXISTS " + Table_Patients);
-        db.execSQL("DROP TABLE IF EXISTS " + Table_Appointments);
-        onCreate(db);
+        return db.delete(Table_Patients, "_id = ?", new String[]{id}); // delete method returns the number of affected rows
     }
 
-    public List<Patient> getAllPatients()
+    // Dealtes the appoinment based on ID
+    public Integer deleteAppointment(String id)
     {
-        List<Patient> list = new ArrayList<Patient>();
-        String selectQuery = "SELECT * FROM " + Table_Patients; //* means everything
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst())
-        {
-            do
-            {
-                Patient patient = new Patient(cursor.getString(1), cursor.getString(2));
-                list.add(patient);
-            }while (cursor.moveToNext());
-        }
-        return list;
-    }
-
-    public List<Appointment> getAllApointments()
-    {
-        List<Appointment> list = new ArrayList<Appointment>();
-        String selectQuery = "SELECT * FROM " + Table_Appointments;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
-        if (cursor.moveToFirst())
-        {
-            do
-            {
-                Appointment Appointment = new Appointment(cursor.getString(1), cursor.getString(2));
-            }while (cursor.moveToNext());
-        }
-        return list;
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete(Table_Appointments, "_id = ?", new String[]{id}); // delete method returns the number of affected rows
     }
 }
