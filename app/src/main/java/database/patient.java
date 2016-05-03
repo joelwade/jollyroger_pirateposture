@@ -2,10 +2,8 @@ package database;
 
 import java.util.Date;
 
-/**
- * Created by p4068830 on 19/04/16.
- */
-public class Patient {
+
+class Patient {
 
     private int PatientID;
     private String FirstName;
