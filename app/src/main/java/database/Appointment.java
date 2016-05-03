@@ -17,7 +17,7 @@ public class Appointment
     private String Diagnostic;
 
     //Constructors
-    public void Appointment(String str1, String str2)
+    public Appointment()
     {
 
     }

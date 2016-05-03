@@ -14,7 +14,7 @@ public class Patient {
     private String Gender;
 
     //Constructors
-    public void Patient(String str1, String str2)
+    public Patient()
     {
 
     }
