@@ -11,7 +11,7 @@ class Patient {
     private Date DoB;
     private String Gender;
 
-    //Constructors
+    //Constructor
     public Patient()
     {
 
